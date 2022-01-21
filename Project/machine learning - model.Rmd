@@ -1,0 +1,175 @@
+---
+title: "Project ML 2022"
+author: "Rafael Gallo"
+date: "21/01/2022"
+proct: "machine learning - model"
+---
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: [http://web.archive.org/web/20161224072740/http:/groupware.les.inf.puc-rio.br/har] (see the section on the Weight Lifting Exercise Dataset).
+
+Data Preprocessing
+
+```{r}
+library(caret)
+library(corrplot)
+library(rpart)
+library(rpart.plot)
+library(rattle)
+```
+Dataset 
+
+The training data for this project are available here:
+
+[https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv]
+
+The test data are available here:
+
+[https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv]
+
+The data for this project come from this source: [http://groupware.les.inf.puc-rio.br/har]. If you use the document you create for this class for any purpose please cite them as they have been very generous in allowing their data to be used for this kind of assignment.
+
+
+1 - Loading the Dataset
+
+The Dataset has been downloaded from the internet and has been loaded into two seperate dataframes, __“training__ and “testing”. The __“training__ data set has 19622 number of records and the __“testing__ data set has 20 records. The number of variables is 160.
+```{r cars}
+
+url_train = "http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+url_test = "http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+
+train_x <- read.csv(url(url_train))
+train_y <- read.csv(url(url_test))
+
+```
+
+
+2 - Data Cleansing
+```{r}
+x1 <- createDataPartition(train_x$classe, p=0.7, list=FALSE)
+
+x_train <- train_x[x1,  ]
+y_train <- train_y[-x1, ]
+```
+
+A.1 Removing Variables which variance
+```{r}
+NSQ <- nearZeroVar(x_train)
+x_train <- x_train[, -NSQ]
+y_train <- y_train[, -NSQ]
+```
+
+
+```{r}
+dim(x_train)
+```
+
+
+```{r}
+dim(y_train)
+```
+
+A.2 Removing Variables NA values
+```{r}
+x1 <- apply(x_train, 2, function(x) mean(is.na(x))) > 0.95
+x1
+```
+
+
+```{r}
+x_train <- x_train[, -which(x1, x1 == FALSE)]
+y_test <- y_train[, -which(x1, x1 == FALSE)]
+```
+
+Data Partitioning
+
+Train = 60% test set  
+Test = 40% total data
+```{r}
+x_train <- x_train[ , -(1:5)]
+y_test <- y_train[ , -(1:5)]
+```
+
+Model 1 - Decision Tree
+```{r}
+set.seed(14907)
+
+model_decision_tree <- rpart(classe ~., method = "class", data = x_train)
+model_decision_tree
+```
+Plot decision tree
+
+```{r}
+fancyRpartPlot(model_decision_tree)
+```
+
+Predict - model
+
+```{r}
+pred_model <- predict(model_decision_tree, y_test, type = "class")
+pred_model
+```
+Matrix confusion
+
+```{r}
+matrix <- confusionMatrix(pred_model, y_test$classe)
+matrix
+```
+
+Model 2 - Random Forest
+
+
+```{r}
+#Model 2 - Random Forest
+
+set.seed(14501)
+model_random_forest <- trainControl(method = "cv", number = 3, verboseIter = FALSE)
+model_random_forest_fit <-train(classe ~., data = x_train, method = "rf")
+model_random_forest_fit$finalModel
+summary(model_random_forest_fit)
+```
+Predict - model
+```{r}
+pred <- predict(model_random_forest_fit, y_test)
+pred
+```
+
+Matrix confusion - Random Forest
+
+```{r}
+matrix <- confusionMatrix(pred, y_test$classe)
+matrix
+```
+
+Model 3 - Generalized boosted 
+
+```{r}
+set.seed(13908)
+model <- trainControl(method = "repeatedcv", number = 5, repeats = 1, verboseIter = FALSE)
+model_GBM <- train(classe ~., data = train, trControl = control, method = "gbm", verbose = FALSE)
+model_GBM$finalModel
+```
+
+Predict - model
+
+```{r}
+pred_model <- predict(model_GBM, y_test, type = "class")
+pred_model
+```
+
+Matrix confusion
+
+```{r}
+matrix <- confusionMatrix(pred_model, y_test$classe)
+matrix
+```
+
+Predict
+
+```{r}
+predict <- predict(model_GBM, y_test)
+predict
+```
+
+Conclusion
+
+After checking the Overall Statistics data, the Random Forest model has definitely more accuracy than GBM. Hence we will be selecting Random Forest model for final prediction from org_testing_data
