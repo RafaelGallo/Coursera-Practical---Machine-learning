@@ -1,10 +1,6 @@
 
 ## Practical Machine-learning - John Hopkins University
 
-Course 8 in the Data Science Specialization by John Hopkins University
- 
-- Link - [Data Science - Machine learning John Hopkins University](https://www.coursera.org/learn/practical-machine-learning)
-
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
@@ -17,6 +13,12 @@ Course 8 in the Data Science Specialization by John Hopkins University
 [![](https://img.shields.io/badge/Shiny-red.svg)](https://shiny.tidyverse.org/)
 [![](https://img.shields.io/badge/plotly-green.svg)](https://plotly.com/)
 [![](https://img.shields.io/badge/Caret-orange.svg)](https://caret.tidyverse.org/)
+
+Course 8 in the Data Science Specialization by John Hopkins University
+ 
+- Link - [Data Science - Machine learning John Hopkins University](https://www.coursera.org/learn/practical-machine-learning)
+
+
 ## Autores
 
 - [@Rafael Gallo](https://www.github.com/rafaelgallo)
