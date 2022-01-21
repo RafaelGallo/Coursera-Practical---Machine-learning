@@ -43,7 +43,7 @@ Nesse curso da Universidade Johns Hopkins e um curso aplicado machine learning n
 
 Modelos de machine learning feito na linguagêm r criação modelos de classificação, regressão, aprendizado não supervisionado
 
-## Instalação
+## Variáveis de Ambiente
 
 ```bash
 Renv/activate.r({
