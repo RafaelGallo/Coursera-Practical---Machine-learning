@@ -19,11 +19,6 @@ Course 8 in the Data Science Specialization by John Hopkins University
 - Link - [Data Science - Machine learning John Hopkins University](https://www.coursera.org/learn/practical-machine-learning)
 
 
-## Autores
-
-- [@Rafael Gallo](https://www.github.com/rafaelgallo)
-
-
 ![Logo](https://brand.jhu.edu/assets/uploads/sites/5/2016/01/university.logo_.small_.horizontal.white_.png)
 
 
