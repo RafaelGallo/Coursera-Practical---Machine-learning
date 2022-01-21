@@ -1,0 +1,1 @@
+## Predicting with regression, multiple covariates
